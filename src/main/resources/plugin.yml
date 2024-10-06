@@ -1,0 +1,21 @@
+name: AsakaGiftcodes
+version: '1.0'
+main: me.blubriu.asakaGiftcodes.AsakaGiftcodes
+api-version: '1.20'
+authors: [ BlubRiu ]
+description: A plugin should be used for some gamemode in Maivien
+website: https://blueberry.is-a.dev
+
+commands:
+  giftcode:
+    usage: /<command>
+    permission: giftcode.admin
+    aliases: [gc]
+  code:
+    usage: /<command>
+
+permissions:
+  giftcode.admin:
+    default: op
+  giftcode.player:
+    default: true
