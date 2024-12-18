@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,6 +33,7 @@ public class AsakaGiftcodes extends JavaPlugin {
     @Override
     public void onEnable() {
         createConfigFiles();
+        refreshGiftCodes();
         loadGiftCodes();
         loadDataplayerConfig();
         updateConfig();
@@ -70,12 +72,11 @@ public class AsakaGiftcodes extends JavaPlugin {
     }
 
     private void sendFancyMessage() {
-        getLogger().info(" ");
-        getLogger().info(ChatColor.GREEN + "AsakaGiftcodes");
-        getLogger().info(" ");
-        getLogger().info(ChatColor.GOLD + "Author: BlubRiu");
-        getLogger().info(ChatColor.YELLOW + "Ver: " + getDescription().getVersion());
-        getLogger().info(" ");
+        ConsoleCommandSender console = Bukkit.getConsoleSender();
+        console.sendMessage("§b");
+        console.sendMessage("§9§lAsakaGiftcodes §e" + getDescription().getVersion());
+        console.sendMessage("§bby §3Blub §7(_blueblub)");
+        console.sendMessage("§b");
     }
 
     @Override
@@ -141,6 +142,7 @@ public class AsakaGiftcodes extends JavaPlugin {
         giftCodes.remove(code);
         giftCodesConfig.set(code, null);
         saveGiftCodes();
+        refreshGiftCodes();
     }
 
     private List<String> listGiftCodes() {
@@ -221,7 +223,7 @@ public class AsakaGiftcodes extends JavaPlugin {
             return;
         }
 
-        String url = "https://api.github.com/repos/blu3berry94/AsakaGiftcodes"; // Thay thế bằng URL của bạn
+        String url = "https://api.github.com/repos/blu3berry94/AsakaGiftcodes/releases/latest";
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -244,18 +246,18 @@ public class AsakaGiftcodes extends JavaPlugin {
                         final String finalLatestVersion = latestVersion;
 
                         if (!finalLatestVersion.equals(currentVersion)) {
-                            getLogger().info(ChatColor.YELLOW + "Đã có phiên bản mới của plugin! Phiên bản hiện tại: v"
-                                    + currentVersion + ", Phiên bản mới: v" + finalLatestVersion);
+                            ConsoleCommandSender console = Bukkit.getConsoleSender();
+                            console.sendMessage("§aĐã có phiên bản mới của plugin! Phiên bản hiện tại: §9"
+                                    + currentVersion + "§a, Phiên bản mới: §9" + finalLatestVersion);
                             Bukkit.getScheduler().runTaskTimer(AsakaGiftcodes.this, new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    getLogger().info(ChatColor.YELLOW
-                                            + "Plugin đã có phiên bản mới: v" + finalLatestVersion);
+                                    console.sendMessage("§aPlugin đã có phiên bản mới: §9" + finalLatestVersion);
                                 }
                             }, 0L, 1080L);
                         } else {
                             getLogger().info(
-                                    ChatColor.GREEN + "Plugin đang ở phiên bản mới nhất v" + currentVersion);
+                                    ChatColor.GREEN + "Plugin đang ở phiên bản mới nhất: §9" + currentVersion);
                         }
                     } else {
                         getLogger().warning("Không thể kết nối để kiểm tra bản cập nhật.");
@@ -279,19 +281,20 @@ public class AsakaGiftcodes extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (label.equalsIgnoreCase("giftcode") || label.equalsIgnoreCase("gc")) {
             if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-                sender.sendMessage(ChatColor.GOLD + "Danh sách lệnh:");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode create <code> - Tạo mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode create <name> random - Tạo ngẫu nhiên 10 mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode del <code> - Xóa mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode reload - Tải lại pluins");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode enable <code> - Kích hoạt mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode disable <code> - Vô hiệu hóa mã quà tặng");
-                sender.sendMessage(ChatColor.GREEN + "/giftcode list - Danh sách mã quà tặng");
-                sender.sendMessage(
-                        ChatColor.GREEN + "/giftcode assign <code> <player> - Gán mã quà tặng cho cho người chơi ");
-                sender.sendMessage(ChatColor.YELLOW + "AsakaGiftcodes 1.0");
-                sender.sendMessage(ChatColor.YELLOW + "Author: BlubRiu");
-                sender.sendMessage(ChatColor.YELLOW + "Ver: " + getDescription().getVersion());
+                sender.sendMessage("§a");
+                sender.sendMessage("§9 §9§lAsakaGiftcodes §7" + getDescription().getVersion());
+                sender.sendMessage("§7 §8by §3Blub");
+                sender.sendMessage("§a");
+                sender.sendMessage("§b/gc create <code> §7- §fTạo mã quà tặng");
+                sender.sendMessage("§b/gc create <name> random §7- §fTạo ngẫu nhiên 10 mã quà tặng");
+                sender.sendMessage("§b/gc del <code> §7- §fXóa mã quà tặng");
+                sender.sendMessage("§b/gc reload §7- §fTải lại pluins");
+                sender.sendMessage("§b/gc enable <code> §7- §fKích hoạt mã quà tặng");
+                sender.sendMessage("§b/gc disable <code> §7- §fVô hiệu hóa mã quà tặng");
+                sender.sendMessage("§b/gc list §7- §fXem danh sách mã quà tặng");
+                sender.sendMessage("§b/gc assign <code> <player> §7- §fGán mã quà tặng cho cho người chơi");
+                sender.sendMessage("§a");
+                sender.sendMessage("§3§l| §fRequired §c§l<> §7; §fOptional §c§l[]");
                 return true;
             }
 
@@ -316,7 +319,7 @@ public class AsakaGiftcodes extends JavaPlugin {
                         sender.sendMessage(ChatColor.GREEN + "Tạo 10 mã quà tặng ngẫu nhiên với tên cơ sở " + args[1]);
                     } else {
                         sender.sendMessage(
-                                ChatColor.RED + "Sử dụng: /giftcode create <code> hoặc /giftcode create <name> random");
+                                ChatColor.RED + "Sử dụng: /gc create <code> hoặc /gc create <name> random");
                     }
                     break;
                 case "del":
@@ -324,12 +327,13 @@ public class AsakaGiftcodes extends JavaPlugin {
                         deleteGiftCode(args[1]);
                         sender.sendMessage(ChatColor.GREEN + "Mã quà tặng " + args[1] + " đã bị xóa!");
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode del <code>");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /gc del <code>");
                     }
                     break;
                 case "reload":
                     reloadConfig();
                     createConfigFiles();
+                    refreshGiftCodes();
                     loadGiftCodes();
                     loadDataplayerConfig();
                     sender.sendMessage(ChatColor.GREEN + "Đã tải lại tất cả các file cấu hình!");
@@ -345,7 +349,7 @@ public class AsakaGiftcodes extends JavaPlugin {
                             sender.sendMessage(ChatColor.RED + "Mã quà tặng không tồn tại!");
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode enable <code>");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /gc enable <code>");
                     }
                     break;
                 case "disable":
@@ -359,13 +363,16 @@ public class AsakaGiftcodes extends JavaPlugin {
                             sender.sendMessage(ChatColor.RED + "Không tồn tài!");
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode disable <code>");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /gc disable <code>");
                     }
                     break;
                 case "list":
-                    sender.sendMessage(ChatColor.YELLOW + "Danh sách mã quà tặng:");
+                    sender.sendMessage("§b§l| §3Danh sách mã quà tặng:");
                     for (String code : listGiftCodes()) {
-                        sender.sendMessage(ChatColor.YELLOW + code);
+                        GiftCode giftCode = giftCodes.get(code);
+                        String expiry = giftCode.getExpiry();
+                        String expiryMessage = expiry.isEmpty() ? "Vĩnh Viễn" : "Hết hạn vào:§c " + expiry;
+                        sender.sendMessage("§a" + code + " §7- §f" + expiryMessage);
                     }
                     break;
                 case "assign":
@@ -380,7 +387,7 @@ public class AsakaGiftcodes extends JavaPlugin {
                             sender.sendMessage(ChatColor.RED + "Không tìm thấy người chơi!");
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sử dụng: /giftcode assign <code> <player>");
+                        sender.sendMessage(ChatColor.RED + "Sử dụng: /gc assign <code> <player>");
                     }
                     break;
 
@@ -446,6 +453,11 @@ public class AsakaGiftcodes extends JavaPlugin {
             return true;
         }
         return false;
+    }
+
+    private void refreshGiftCodes() {
+        giftCodes.clear();
+        loadGiftCodes();
     }
 
     public class GiftCode {
