@@ -7,9 +7,9 @@
 # Code demo
 samplecode:
   commands:
-    - give %player% diamond 1  # Lenh give qua` cho nguoi choi
-  message: "You have received 1 diamond!"  # Thong bao gui toi nguoi choi sau khi nhap code
-  max-uses: 10  # Tong so lan dung code duoc
-  expiry: "2024-12-31T23:59:59"  # Ngay gio het han code theo dinh dang ISO 8601
-  enabled: true  # true de code active , false de disable code.
-  player-max-uses: 1  # So lan 1 nguoi choi co the dung duoc code (1 = la 1 nguoi choi dung dc 1 lan)
+    - give %player% diamond 1 
+  message: "You have received 1 diamond!" 
+  max-uses: 10
+  expiry: "2024-12-31T23:59:59"
+  enabled: true
+  player-max-uses: 1
