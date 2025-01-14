@@ -1,10 +1,10 @@
 #########################################################
 #                                                       #
-#                Akiki Giftcodes - Config               #
+#                AsakaGiftcodes - Config                #
 #                                                       #
 #########################################################
 
-check-update: true # false de tat
+check-update: true
 
 messages:
   invalid-code: "Mã quà tặng bạn đã nhập không hợp lệ."
