@@ -12,4 +12,4 @@ messages:
   max-uses-reached: "Mã quà tặng bạn nhập đã đạt số lần sử dụng tối đa."
   code-disabled: "Mã quà tặng bạn nhập hiện đã bị vô hiệu hóa."
   code-redeemed: "Bạn đã đổi mã quà tặng thành công!"
-  code-already-redeemed: "Bạn đã đổi mã này rồi."
+  code-already-redeemed: "Bạn đã đổi mã này rồi!"
