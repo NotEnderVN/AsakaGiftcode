@@ -4,7 +4,6 @@
 #                                                       #
 #########################################################
 
-# Code demo
 samplecode:
   commands:
     - give %player% diamond 1 
